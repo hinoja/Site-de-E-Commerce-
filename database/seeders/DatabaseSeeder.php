@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Database\Seeders\ProductSeeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Product::factory()
+        ->count(50)
+        ->hasPosts(1)
+        ->create();
+
+        $this->call([
+           ProductSeeder::class,
+            // PostSeeder::class,
+            // CommentSeeder::class,
+        ]);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
