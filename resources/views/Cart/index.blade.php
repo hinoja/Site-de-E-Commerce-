@@ -55,7 +55,7 @@
                                                                 </div>
                                                             </th>
                                                             <td class="border-0 align-middle" class="text-center"><strong>   {{ $item->price }} Fcfa </strong></td>
-                                                            <td class="border-0 align-middle"  class="text-center"><strong>  3  </strong></td>
+                                                            <td class="border-0 align-middle"  class="text-center"><strong>  {{ $item->qty }}  </strong></td>
                                                             <td class="border-0 align-middle"  class="text-center">
                                                                      <form action="{{ route('cart.delete',$item->rowId) }}" method="POST">
                                                                         @csrf
