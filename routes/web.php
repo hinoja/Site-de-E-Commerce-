@@ -37,5 +37,6 @@ Route::get('/viderPanier',function(){
 // Route::get('Paiement',[CheckoutController::class,'checkout'])->name('checkout.index');
 // Route::get('stripe/payement',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
 
-Route::get('checkout',[CheckoutController::class,'checkout'])->name('checkout.index');
-Route::post('checkout',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
+Route::get('/checkout',[CheckoutController::class,'checkout'])->name('checkout.index');
+Route::post('/checkout',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
+Route::get('/merci',[CheckoutController::class,'thankYou'])->name('checkout.merci');

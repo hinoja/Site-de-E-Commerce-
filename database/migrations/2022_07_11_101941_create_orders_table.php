@@ -14,7 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('payment_id')->unique();//payment_intent_id
+            $table->integer('amount');
+               $table->dateTime('payment_created_at');
+            $table->text('products');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

@@ -117,7 +117,7 @@
 
           form.addEventListener('submit', function(event) {
               event.preventDefault();
-
+              form.disabled=true;
               stripe.handleCardPayment(clientSecret, cardElement, {
                   payment_method_data: {
                       //billing_details: { name: cardHolderName.value }
@@ -129,6 +129,7 @@
                       // Inform the user if there was an error.
                       var errorElement = document.getElementById('card-errors');
                       errorElement.textContent = result.error.message;
+                      form.disabled=false;
                   } else {
                       console.log(result);
                       form.submit();

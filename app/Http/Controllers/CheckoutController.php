@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Orders;
+use DateTime;
 
 
 use Stripe\Stripe;
@@ -9,13 +11,18 @@ use Stripe\StripeClient;
 use Stripe\PaymentIntent;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
-
 
 class CheckoutController extends Controller
 {
     public function checkout()
     {
+
+        if(Cart::count()<=0)
+        {
+                return redirect()->route('products.index');
+        }
         // Enter Your Stripe Secret
         \Stripe\Stripe::setApiKey('sk_test_51Kp5tJGRaOhIEKLtouPZzW5F8bA3Dfr1IZzvVnMs7OPGgNYFRBO76yFnmY0m8NYPaFsGr1vqjtK7X2LGdLNpwPdT00wSBnBjMP');
 
@@ -32,15 +39,54 @@ class CheckoutController extends Controller
 			'payment_method_types' => ['card'],
 		]);
 		$intent = $payment_intent->client_secret;
+//
 
 		return view('checkout.index',compact('intent'));
 
     }
 
-    public function afterPayment()
+   public function ThankYou()
+   {
+     return Session::has('succeed') ? view('checkout.merci') :  redirect()-route('products.index');
+   }
+
+    public function afterPayment(Request $request)
     {
-        Cart::destroy();
-        echo '<h1>Merci pour nous avoir fait Confiance.</h1>';
+
+
+          //store payment in database
+          $payment_intent=$request;//a verifier si la recuperation est effective via REQUEST
+          $order=new Orders();
+          $order->payment_id= $payment_intent['paymentIntent']['id'];
+          $order->amount= $payment_intent['paymentIntent']['amount'];
+          $order->payment_created_at=(new DateTime())
+                                      ->setTimestamp($payment_intent['paymentIntent']['created'])
+                                      ->format('Y-m-d H-i-s');
+
+              $products=[];
+              $i=0;
+              foreach(Cart::content() as $product)
+              {
+                     $products['product_id_'.$i][]=$product->qty;
+                     $products['product_id_'.$i][]=$product->price;
+                     $products['product_id_'.$i][]=$product->name;
+                     $i++;
+              }
+              $order->products=serialize($products);
+              $order->user_id=15;
+              $order->save();
+              if($payment_intent['paymentIntent']['status'] === 'succeeded')
+              {
+                Cart::destroy();
+                //echo '<h1>Merci pour nous avoir fait Confiance.</h1> Payement effectué avec succès';
+                Session::flash('succeed','Votre Commande a  été traitée avec Succès ');
+                return response()->json(['succeed'=>'Payment intent succeede']);
+              }
+              else
+              {
+                echo '<h1>Merci pour nous avoir fait Confiance.</h1> Error dans le  Payement ';
+                return response()->json(['succeed'=>'Payment Not Intent succeede']);
+              }
 
     }
 }
