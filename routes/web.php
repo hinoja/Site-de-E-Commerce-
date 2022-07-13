@@ -30,7 +30,7 @@ Route::get('/panier',[CartController::class,'index'])->name('cart.index');
 Route::delete('/panier/{rowId}',[CartController::class,'destroy'])->name('cart.delete');
 Route::post('/panier/ajouter',[CartController::class,'store'])->name('cart.store');
 Route::get('/viderPanier',function(){
-    // Cart::destroy();
+    Cart::destroy();
 });
 
 // route to checkout
