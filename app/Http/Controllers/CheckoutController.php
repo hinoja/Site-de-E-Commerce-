@@ -13,9 +13,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
-
+$search=[];
 class CheckoutController extends Controller
 {
+
     public function checkout()
     {
 
@@ -34,35 +35,39 @@ class CheckoutController extends Controller
         // $amount =  round((floatval($amount))) ;
 
         $payment_intent = \Stripe\PaymentIntent::create([
-			      'description' => 'Stripe Test Payment',
-			'amount' =>$amount,
-			'currency' => 'usd',
+		    'description' => 'Stripe Test Payment',
+			'amount' =>$amount,//correctement formater avant d'envoyer,imperatif (A faire)
+			'currency' => 'XAF',
 			'description' => 'Payment From All About Laravel',
 			'payment_method_types' => ['card'],
 		]);
-
+         $search=$payment_intent;
 		$intent = $payment_intent->client_secret;
 //
 
-		return view('checkout.index',compact('intent'));
+	        	return view('checkout.index',['intent'=>$payment_intent]);
+		// return view('checkout.index',compact('intent'));
 
     }
 
    public function ThankYou()
    {
-     return Session::has('succeed') ? view('checkout.merci') :  redirect()-route('products.index');
+     return   view('checkout.merci') ;
    }
 
     public function afterPayment(Request $request)
     {
-
-
+        // global $search;
+    //    dd($search);
+    //   dd($request);
           //store payment in database
-          $payment_intent=$request->json()->all();//a verifier si la recuperation est effective via REQUEST
+          $payment_intent=$request->json()->all();//a verifier si la recuperation est effective à via REQUEST
           $order=new Orders();
+          Cart::destroy();
+          return  redirect()->route('checkout.merci') ;
         //  dd($request->json()->all());
-        //    $order->payment_id= $payment_intent['paymentIntent']['id'];
-        //   $order->amount= $payment_intent['paymentIntent']['amount'];
+           $order->payment_id= $payment_intent['paymentIntent']['id'];
+          $order->amount= $payment_intent['paymentIntent']['amount'];
           $order->payment_created_at=(new DateTime())
                                       ->setTimestamp($payment_intent['paymentIntent']['created'])
                                       ->format('Y-m-d H-i-s');
@@ -78,8 +83,9 @@ class CheckoutController extends Controller
               }
               $order->products=serialize($products);
               $order->user_id=15;
+
               $order->save();
-              return  view('checkout.merci') ;
+
             //   if($payment_intent['paymentIntent']['status'] === 'succeeded')
             //   {
             //     Cart::destroy();

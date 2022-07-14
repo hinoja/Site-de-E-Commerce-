@@ -65,7 +65,7 @@
                             id="card-button"
                             class="btn btn-dark"
                             type="submit"
-                            data-secret="{{ $intent }}"
+                            data-secret="{{  $intent->client_secret}}"
                             > Pay </button>
                         </div>
                     </form>

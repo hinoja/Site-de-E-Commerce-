@@ -5,14 +5,15 @@
       <strong class="d-inline-block mb-2 text-success">Design</strong>
       <h5 class="mb-0"> {{ $content->title }}</h5>
       <div class="mb-1 text-muted">{{ $content->created_at }}</div>
-      <p class="mb-auto">{{ $content->description }}</p>
+      <p class="mb-auto" style="text-align: justify">{{ $content->description }}</p>
       <strong class="mb-auto">${{ $content->price }}</strong>
+      <br><br>
         <form action="{{ route('cart.store') }}" method="POST">
             @csrf
 
             <input type="hidden" name="product_id" value="{{ $content->id  }}">
 
-
+     <br><br>
             <button type="submit" class="btn btn-dark"> Ajouter au Panier </button>
         </form>
 
