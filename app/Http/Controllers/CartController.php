@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Session as FacadesSession;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -37,24 +41,27 @@ class CartController extends Controller
     public function store(Request $request)
     {
 
-            $duplicata= Cart::search(function ($cartItem,$row) use($request)
-            {
-                return $cartItem->id === $request->product_id;
-            });
-          if($duplicata->isNotEmpty())
-            {
-                return redirect()->route('products.index')->with('success'," Le produit a déjà  été ajouté");
-            }
 
-                 $product=Product::find($request->product_id);
-                Cart::add($product->id,$product->title,1,$product->price)
-                ->associate('Product');
+        $duplicata = Cart::search(function ($cartItem, $rowId) use ($request) {
+            return $cartItem->id == $request->product_id;
+        });
 
-                return redirect()->route('products.index')->with('success',"Le produit a bien été ajouté");
+        if ($duplicata->isNotEmpty()) {
+            return redirect()->route('products.index')->with('success', 'Le produit a déjà été ajouté.');
+        }
+
+        $product = Product::find($request->product_id);
+
+        Cart::add($product->id, $product->title, 1, $product->price)
+            ->associate('App\Product');
+
+        return redirect()->route('products.index')->with('success', 'Le produit a bien été ajouté.');
 
 
 
-            return redirect()->route('products.index')->with('success'," Le produit a déjà  été ajouté");
+
+
+
 
     }
 
@@ -83,14 +90,31 @@ class CartController extends Controller
 
     /**
      * Update the specified resource in storage.
+
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $rowId)
     {
-        //
+
+        $data = $request->json()->all();
+
+        $validates = Validator::make($request->all(), [
+            'qty' => 'numeric|required|between:1,5',
+        ]);
+
+        if ($validates->fails()) {
+
+            session()->flash('error', 'La quantité doit est comprise entre 1 et 5.');
+            return response()->json(['error' => 'Cart Quantity Has Not Been Updated']);
+        }
+
+        Cart::update($rowId, $data['qty']);
+        session()->flash('success', 'La quantité est bien passée à '.$data['qty'].'.');
+        // /Session::flash('success', 'La quantité du produit est passée à ' . $data['qty'] . '.');
+        return response()->json(['success' => 'Cart Quantity Has Been Updated']);
     }
 
     /**

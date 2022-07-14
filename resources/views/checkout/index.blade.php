@@ -134,8 +134,7 @@
                       form.disabled=false;
                   } else {
 
-                           if(result.paymentIntent.status === "succeeded")
-                           {
+
                                  var paymentIntent=result.paymentIntent;
                                 form.submit();
 
@@ -163,7 +162,7 @@
                                     // window.log()
                                 })
 
-                           }
+                         
 
 
                   }
