@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -12,6 +13,10 @@ class Product extends Model
 {
     $price=$this->price/100;
     return number_format($price*100,2,',',' ')." €";
+}
+public function categories()
+{
+   return $this->belongsToMany(Category::class);
 }
 
 

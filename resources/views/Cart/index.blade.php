@@ -62,11 +62,9 @@
                                                                     <td class="border-0 align-middle" class="text-center"><strong>   {{ $item->subtotal() }} Fcfa </strong></td>
                                                                     <td class="border-0 align-middle"  class="text-center">
                                                                         <strong>
-                                                                            <select name="qty" id="qty" class="custom-select" data-id="{{$item->rowId}}">
-                                                                                @for ($i = 1; $i <= 5; $i++)
-                                                                                  <option value="{{ $i }}" {{ $item->qty == $i ? 'selected' : ''}}>
-                                                                                    {{ $i }}
-                                                                                  </option>
+                                                                            <select class="quantity" data-id="{{ $item->rowId }}" data-productQuantity="{{ $item->qty }}">
+                                                                                @for ($i = 1; $i < 5 + 1 ; $i++)
+                                                                                    <option {{ $item->qty == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                                                 @endfor
                                                                             </select>
 
@@ -121,7 +119,17 @@
                                                 {{-- <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong>$10.00</strong></li> --}}
                                                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong>{{ Cart::tax() }} Fcfa</strong></li>
                                                 <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Total</strong>
-                                                <h5 class="font-weight-bold">{{ Cart::total() }} Fcfa</h5>
+                                                <h5 class="font-weight-bold">
+
+                                                    @if ( isset($newSubtotal) )
+                                                        {{ $newSubtotal }}
+                                                    @else
+                                                    {{ Cart::total() }} Fcfa
+                                                    @endif
+
+
+
+                                                </h5>
                                                 </li>
                                             </ul><a href="{{ route('checkout.index') }}" class="btn btn-dark rounded-pill py-2 btn-block">Passer à la Caisse </a>
                                             </div>
@@ -148,7 +156,7 @@
 
 
 @section('extra-js')
-  <script>
+  {{-- <script>
         var qty = document.querySelectorAll('#qty');
             Array.from(qty).forEach((element) => {
                 element.addEventListener('change', function () {
@@ -174,9 +182,37 @@
                     });
                 });
             });
-  </script>
+  </script> --}}
 
+  <script src="{{ asset('js/app.js') }}"></script>
+  <script>
+      (function(){
 
+          const classname = document.querySelectorAll('.quantity')
+
+          Array.from(classname).forEach(function(element) {
+              element.addEventListener('change', function() {
+                window.location.href = '{{ route('cart.index') }}'
+                const id = element.getAttribute('data-id')
+                  const productQuantity = element.getAttribute('data-productQuantity')
+
+                  axios.patch(`/panier/${rowId}`, {
+                      quantity: this.value,
+                      productQuantity: productQuantity
+                  })
+                  .then(function (response) {
+                      // console.log(response);
+                      window.location.href = '{{ route('cart.index') }}'
+                  })
+                  .catch(function (error) {
+                      // console.log(error);
+                      window.location.href = '{{ route('cart.index') }}'
+                  });
+              })
+          })
+      })();
+
+</script>
 @endsection
 
 

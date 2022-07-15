@@ -12,11 +12,32 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product=Product::inRandomOrder()->take(6)->get();
+        // if(request()->categorie)
+        // {
 
-         return view('Products.index',['product'=>$product]);
+        //     $product=Product::with('categories')->whereHas('categories',function($query) { $query->where('slug',request()->categorie); });
+
+
+        // }else{
+        //       $product=Product::with('categories')->paginate('4');
+        // }
+
+
+
+        if (request()->categorie) {
+            $product= Product::with('categories')->whereHas('categories', function ($query) {
+                $query->where('slug', request()->categorie);
+            })->paginate(6);
+        } else {
+            $product = Product::with('categories')->paginate(6);
+        }
+
+
+
+
+            return view('Products.index',['product'=>$product]);
     }
 
     /**

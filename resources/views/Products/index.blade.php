@@ -6,7 +6,11 @@
         <div class="col-md-6">
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static" style="text-align: center">
-                <strong class="d-inline-block mb-2 text-success">Design</strong>
+                <strong class="d-inline-block mb-2 text-success">
+                        @foreach ( $item->categories as $category )
+                            {{ $category->name }}
+                        @endforeach
+                </strong>
                 <h5 class="mb-0"> {{ $item->title }}</h5>
                 <div class="mb-1 text-muted">{{ $item->created_at }}</div>
                 <p class="mb-auto">{{ $item->subtitle }}</p>
@@ -22,5 +26,6 @@
         </div>
      @endforeach
 
+       {{ $product->appends(request()->input())->links() }}
 
 @endsection

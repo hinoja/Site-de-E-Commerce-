@@ -17,18 +17,22 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('products')->insert([
-            'title' => Str::random(10),
-            'subtitle' => Str::random(10),
-            'image' => Str::random(8),
-            'description' => Str::random(150),
-            'price'=>  random_int(1,150),
-                'slug' => Str::random(10),
-            'created_at' => now(),
-
-
-
-        ]);
+            DB::table('products')->create
+            ([
+                'title' => Str::random(10),
+                'subtitle' => Str::random(10),
+                'image' => Str::random(8),
+                'description' => Str::random(150),
+                'price'=>  random_int(1,150),
+                    'slug' => Str::random(10),
+                'created_at' => now(),
+            ])->categories()->attach([
+                rand(1,4),
+                rand(1,4)
+           ]);
     }
 
 }
+
+
+
