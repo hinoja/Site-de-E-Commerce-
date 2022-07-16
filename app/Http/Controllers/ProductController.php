@@ -29,7 +29,7 @@ class ProductController extends Controller
         if (request()->categorie) {
             $product= Product::with('categories')->whereHas('categories', function ($query) {
                 $query->where('slug', request()->categorie);
-            })->paginate(6);
+            })->orderBy('created_at','desc')->paginate(6);
         } else {
             $product = Product::with('categories')->paginate(6);
         }
@@ -80,10 +80,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function search()
+    // {
+
+    //      $q=request()->input('q');
+    //      dd($q);
+    //      $products=Product::where('title','like',"%$q%")
+    //      ->orwhere('description','like',"%$q%")
+    //      ->paginate(6);
+    //      return view('partials.search')->with('products',$products);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -103,8 +109,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function search()
     {
-        //
+        $q=request()->input('q');
+
+        $products=Product::where('title','like',"%$q%")
+        ->orwhere('description','like',"%$q%")
+        ->paginate(6);
+        return view('Products.search')->with('products',$products);
     }
 }

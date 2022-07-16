@@ -1,11 +1,13 @@
 <?php
 
 
+ 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,7 @@ Route::get('/', function () {
 Route::get('/boutique',[ProductController::class,'index'])->name('products.index');
 Route::get('/boutique/{slug}',[ProductController::class,'show'])->name('products.show');
 Route::get('/panier',[CartController::class,'index'])->name('cart.index');
+Route::get('/search',[ProductController::class,'search'])->name('products.search');
 
 //Cart Route//
 Route::delete('/panier/{rowId}',[CartController::class,'destroy'])->name('cart.delete');
@@ -42,3 +45,9 @@ Route::get('/viderPanier',function(){
 Route::get('/checkout',[CheckoutController::class,'checkout'])->name('checkout.index');
 Route::post('/checkout',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
 Route::get('/merci',[CheckoutController::class,'thankYou'])->name('checkout.merci');
+
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
