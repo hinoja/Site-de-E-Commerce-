@@ -22,7 +22,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('/search',[ProductController::class,'search'])->name('products.search');
 Route::get('/boutique',[ProductController::class,'index'])->name('products.index');
+Route::get('/search',[ProductController::class,'search'])->name('products.search');
 Route::get('/boutique/{slug}',[ProductController::class,'show'])->name('products.show');
 Route::get('/panier',[CartController::class,'index'])->name('cart.index');
 

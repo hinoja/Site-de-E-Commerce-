@@ -2,7 +2,7 @@
 @section('Content')
 
 
-     @foreach ($product as $item )
+     @foreach ($products as $item )
         <div class="col-md-6">
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col p-4 d-flex flex-column position-static" style="text-align: center">
@@ -26,6 +26,6 @@
         </div>
      @endforeach
 
-       {{ $product->appends(request()->input())->links() }}
+       {{ $products->appends(request()->input())->links() }}
 
 @endsection

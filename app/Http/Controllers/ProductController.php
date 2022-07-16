@@ -37,7 +37,7 @@ class ProductController extends Controller
 
 
 
-            return view('Products.index',['product'=>$product]);
+            return view('Products.index',['products'=>$product]);
     }
 
     /**
@@ -56,9 +56,16 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function search()
     {
-        //
+        request()->validate([
+            'word'=>'required|min:3'
+        ]);
+        $q=request()->input('word');
+          $products=Product::where('title','like',"%$q%")
+                            ->orWhere('description','like',"%$q%")
+                            ->paginate(3);
+                            return view('Products.search',['products'=>$products]);
     }
 
     /**
