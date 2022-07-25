@@ -92,8 +92,6 @@ class ProductController extends Controller
         //
     }
 
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -101,9 +99,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     public function index2()
+    public function update(Request $request, $id)
     {
-        return view('connexion.index');
+        //
     }
 
     /**

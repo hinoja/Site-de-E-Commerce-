@@ -1,5 +1,3 @@
-
-
 @php
     use App\Models\Category;
    use Gloudemans\Shoppingcart\Facades\Cart;

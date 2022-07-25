@@ -1,9 +1,7 @@
-
 @php
     use Gloudemans\Shoppingcart\Facades\Cart;
-    use App\Models\Product;
 
-
+    use App\Product;
 @endphp
 
 @extends('layout.Master')
@@ -21,7 +19,7 @@
                                 <div class="col-xs-12 col-lg-12  ">
                                     <!-- For demo purpose -->
                                     <div class="container text-red py-5 text-center">
-                                        <h3 class="display-4" style="font-weight:bold;">  {{ Cart::count() }} element(s) dans le  Panier </h3>
+                                        <h1 class="display-4"> Mon Panier </h1>
                                     </div>
                                     <!-- End -->
 
@@ -54,16 +52,11 @@
                                                             @foreach (Cart::content() as $item )
                                                                 <tr>
                                                                     <th scope="row" class="border-0" class="text-center">
-
-
-
                                                                         <div class="p-2">
-                                                                            {{-- <img src="{{ asset('storage/'.$content->image) }}" alt="test" width="200" height="250"> --}}
-                                                                             <img src="{{ asset('storage/'.$item->model->image) }}" alt="image" width="70" class="img-fluid rounded shadow-sm"><br>
+                                                                            <img src="{{ asset('img/img01.png') }} " alt="" width="70" class="img-fluid rounded shadow-sm"><br>
                                                                             <div class="ml-3 d-inline-block align-middle">
-                                                                            {{-- <h5 class="mb-0"> <a href="{{ route('products.show', ['slug' => $product->slug]) }}" class="text-dark d-inline-block align-middle">Nom Produit :   </a></h5><span class="text-muted font-weight-normal font-italic d-block">{{ $item->name }}</span> --}}
-                                                                            <h5 class="mb-0"> <a href="{{ route('products.show',$item->model->slug) }}" class="text-dark d-inline-block align-middle">{{ $item->title }}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category:</span>
-                                                                        </div>
+                                                                            <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Nom Produit :   </a></h5><span class="text-muted font-weight-normal font-italic d-block">{{ $item->name }}</span>
+                                                                            </div>
                                                                         </div>
                                                                     </th>
                                                                     <td class="border-0 align-middle" class="text-center"><strong>   {{ $item->subtotal() }} Fcfa </strong></td>
@@ -195,80 +188,31 @@
   <script>
       (function(){
 
-          const classname = document.querySelectorAll('.quantity');
+          const classname = document.querySelectorAll('.quantity')
 
           Array.from(classname).forEach(function(element) {
               element.addEventListener('change', function() {
+                window.location.href = '{{ route('cart.index') }}'
+                const id = element.getAttribute('data-id')
+                  const productQuantity = element.getAttribute('data-productQuantity')
 
-                // var id = element.getAttribute('data-id')
-                 var rowId = element.getAttribute('data-id');
-                  var productQuantity = element.getAttribute('data-productQuantity');
-                //   window.location.href =`/panier_update/${rowId}`;
-                  axios.patch(`/panier_update/${rowId}`,
-                   {
-
+                  axios.patch(`/panier/${rowId}`, {
                       quantity: this.value,
                       productQuantity: productQuantity
-                   })
+                  })
                   .then(function (response) {
                       // console.log(response);
                       window.location.href = '{{ route('cart.index') }}'
                   })
                   .catch(function (error) {
                       // console.log(error);
-                                    window.location.href = '{{ route('cart.index') }}'
+                      window.location.href = '{{ route('cart.index') }}'
                   });
               })
           })
       })();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//       var qty = document.querySelectorAll('#qty');
-//     Array.from(qty).forEach((element) => {
-//         element.addEventListener('change', function () {
-//             var rowId = element.getAttribute('data-id');
-//             var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-//             fetch(`/panier/${rowId}`,
-//                 {
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                         "Accept": "application/json, text-plain, */*",
-//                         "X-Requested-With": "XMLHttpRequest",
-//                         "X-CSRF-TOKEN": token
-//                     },
-//                     method: 'patch',
-//                     body: JSON.stringify({
-//                         qty: this.value
-//                     })
-//             }).then((data) => {
-//                 console.log(data);
-//                 location.reload();
-//             }).catch((error) => {
-//                 console.log(error);
-//             });
-//         });
-//     });
-// </script>
+</script>
 @endsection
 
 
