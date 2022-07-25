@@ -29,7 +29,7 @@ class CheckoutController extends Controller
 
 
 		 $amount = ((int)(Cart::total()));
-		 $amount *= 100;
+		 $amount = $amount*10000;
 		//  $amount *= 1;
 
         // $amount =  round((floatval($amount))) ;
@@ -62,6 +62,7 @@ class CheckoutController extends Controller
     //   dd($request);
           //store payment in database
           $payment_intent=$request->json()->all();//a verifier si la recuperation est effective à via REQUEST
+            
           $order=new Orders();
           Cart::destroy();
           return  redirect()->route('checkout.merci') ;

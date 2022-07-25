@@ -8,9 +8,11 @@
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
         "hardevine/shoppingcart": "^3.1",
+        "laravel/breeze": "1.9.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "laravel/ui": "^3.4",
         "stripe/stripe-php": "^8.10",
         "tcg/voyager": "^1.5"
     },

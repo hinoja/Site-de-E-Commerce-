@@ -20,7 +20,7 @@ class CartController extends Controller
     public function index()
     {
 
-        
+
          return view('Cart.index');
     }
 
@@ -53,7 +53,7 @@ class CartController extends Controller
 
              $product=Product::find($request->product_id);
             Cart::add($product->id,$product->title,1,$product->price)
-            ->associate('Product');
+            ->associate('App\Models\Product');
 
             return redirect()->route('products.index')->with('success',"Le produit a bien été ajouté");
 
@@ -100,6 +100,7 @@ class CartController extends Controller
      */
     public function update(Request $request, $rowId)
     {
+        dd('test');
 
         $validator = Validator::make($request->all(), [
             'quantity' => 'required|numeric|between:1,5'

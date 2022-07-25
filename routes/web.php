@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -21,31 +22,58 @@ use App\Http\Controllers\CheckoutController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/boutique',[ProductController::class,'index'])->name('products.index');
 
 // Route::get('/search',[ProductController::class,'search'])->name('products.search');
-Route::get('/boutique',[ProductController::class,'index'])->name('products.index');
-Route::get('/search',[ProductController::class,'search'])->name('products.search');
-Route::get('/boutique/{slug}',[ProductController::class,'show'])->name('products.show');
-Route::get('/panier',[CartController::class,'index'])->name('cart.index');
+        Route::group(['middleware'=>['auth']],function()
+        {
 
-//Cart Route//
-Route::delete('/panier/{rowId}',[CartController::class,'destroy'])->name('cart.delete');
-Route::patch('/panier/{rowId}',[CartController::class,'update'])->name('cart.update');
+            Route::get('/search',[ProductController::class,'search'])->name('products.search');
+            Route::get('/boutique/{slug}',[ProductController::class,'show'])->name('products.show');
+            Route::get('/panier',[CartController::class,'index'])->name('cart.index');
 
-Route::post('/panier/ajouter',[CartController::class,'store'])->name('cart.store');
-Route::get('/viderPanier',function(){
-    Cart::destroy();
-});
+            //Cart Route//
+            Route::delete('/panier_supprimer/{rowId}',[CartController::class,'destroy'])->name('cart.delete');
+            Route::patch('/panier_update/{rowId}',[CartController::class,'update'])->name('cart.update');
+
+            Route::post('/panier/ajouter',[CartController::class,'store'])->name('cart.store');
+            Route::get('/viderPanier',function(){
+                Cart::destroy();
+            });
+        });
 
 // route to checkout
 // Route::get('Paiement',[CheckoutController::class,'checkout'])->name('checkout.index');
 // Route::get('stripe/payement',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
 
-Route::get('/checkout',[CheckoutController::class,'checkout'])->name('checkout.index');
-Route::post('/checkout',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
-Route::get('/merci',[CheckoutController::class,'thankYou'])->name('checkout.merci');
+Route::group(['middleware'=>['auth']],function(){
+    Route::get('/checkout',[CheckoutController::class,'checkout'])->name('checkout.index');
+    Route::post('/checkout',[CheckoutController::class,'afterPayment'])->name('checkout.afterPayment');
+    Route::get('/merci',[CheckoutController::class,'thankYou'])->name('checkout.merci');
 
+});
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+// Auth::routes();
+
+// Route::get('/home', [ProductController::class, 'index2'])->name('test');
+// Route::get('/sign', [App\Http\Controllers\HomeController::class, 'sign'])->name('sign');
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -21,7 +21,7 @@
 
     <!-- Bootstrap core CSS -->
 <link href="{{ asset('bootstrap.min.css')}}" rel="stylesheet" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-
+{{-- <link rel="stylesheet" href="{{ asset('') }}"> --}}
 
 
     <!-- Favicons -->
@@ -71,7 +71,8 @@
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
          @include('partials.search')
-        <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a>
+        {{-- <a class="btn btn-sm btn-outline-secondary" href="#">Sign up</a> --}}
+         @include('partials.auth')
       </div>
     </div>
   </header>
@@ -80,7 +81,7 @@
     <nav class="nav d-flex justify-content-between">
 
             @foreach (Category::all() as $category)
-            <a class="p-2 text-muted" href="{{ route('products.index', ['categorie' => $category->slug]) }}">{{ $category->name }}</a>
+                <a class="p-2 text-muted" href="{{ route('products.index', ['categorie' => $category->slug]) }}">{{ $category->name }}</a>
             @endforeach
 
     </nav>
@@ -91,11 +92,15 @@
         {{ session('success') }}
       </div>
   @elseif (session('danger'))
-     <div>
+
         <div class="alert alert-danger">
             {{ session('danger') }}
-          </div>
-     </div>
+        </div>
+
+  @elseif (session('danger'))
+    <div class="alert alert-danger">
+        {{ session('danger') }}
+    </div>
   @endif
   @if (count($errors))
     <div class="alert alert-danger">
