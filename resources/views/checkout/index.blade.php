@@ -125,7 +125,7 @@
                   }
               })
               .then(function(result) {
-
+                var paymentIntent = result.paymentIntent;
                 //   console.log(result);
                   if (result.error) {
                       // Inform the user if there was an error.
@@ -135,7 +135,7 @@
                   } else {
 
 
-                                 var paymentIntent=result.paymentIntent;
+                                 
                                 form.submit();
 
                                 // console.log(paymentIntent)

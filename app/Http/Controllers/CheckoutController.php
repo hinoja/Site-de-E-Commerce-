@@ -61,15 +61,16 @@ class CheckoutController extends Controller
     //    dd($search);
     //   dd($request);
           //store payment in database
-          $payment_intent=$request->json()->all();//a verifier si la recuperation est effective à via REQUEST
+
+          $paymentIntent=$request->json()->all();//a verifier si la recuperation est effective à via REQUEST
           $order=new Orders();
           Cart::destroy();
-          return  redirect()->route('checkout.merci') ;
+
         //  dd($request->json()->all());
-           $order->payment_id= $payment_intent['paymentIntent']['id'];
-          $order->amount= $payment_intent['paymentIntent']['amount'];
+           $order->payment_id= $paymentIntent['paymentIntent']['id'];
+          $order->amount= $paymentIntent['paymentIntent']['amount'];
           $order->payment_created_at=(new DateTime())
-                                      ->setTimestamp($payment_intent['paymentIntent']['created'])
+                                      ->setTimestamp($paymentIntent['paymentIntent']['created'])
                                       ->format('Y-m-d H-i-s');
 
               $products=[];
@@ -85,6 +86,7 @@ class CheckoutController extends Controller
               $order->user_id=15;
 
               $order->save();
+              return  redirect()->route('checkout.merci') ;
 
             //   if($payment_intent['paymentIntent']['status'] === 'succeeded')
             //   {
