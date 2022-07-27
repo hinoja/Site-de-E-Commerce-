@@ -25,7 +25,8 @@
         </small>
         <h5 class="mb-0">{{ $item->title }}</h5>
         <p class="mb-auto text-muted">{{ $item->slug }}</p>
-        <strong class="mb-auto font-weight-normal text-secondary">{{ $item->price }}</strong>
+        <strong class="display-4 mb-4 text-secondary">{{ $item->price }} Fcfa </strong>
+        {{-- <strong class="mb-auto font-weight-normal text-secondary">{{ $item->price }}</strong> --}}
         <a href="{{ route('products.show', $item->slug) }}" class="stretched-link btn btn-info">Consulter le produit</a>
       </div>
       <div class="col-auto d-none d-lg-block">

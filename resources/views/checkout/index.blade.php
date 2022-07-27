@@ -43,7 +43,7 @@
                       <p>Your Total Amount is {{ Cart::total() }} XAF</p>
                   </div>
                   <div class="card">
-                      <form action="{{route('checkout.afterPayment')}}"  method="post" id="payment-form">
+                      <form  action="{{route('checkout.afterPayment')}}"  method="post" id="payment-form">
                           @csrf
                           <div class="form-group">
                               <div class="card-header">
@@ -135,7 +135,7 @@
                   } else {
 
 
-                                 
+
                                 form.submit();
 
                                 // console.log(paymentIntent)

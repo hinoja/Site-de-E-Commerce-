@@ -79,9 +79,11 @@
   <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
 
-            @foreach (Category::all() as $category)
-                <a class="p-2 text-muted" href="{{ route('products.index', ['categorie' => $category->slug]) }}">{{ $category->name }}</a>
-            @endforeach
+          @if (request()->routeIs('products.index')|| request()->routeIs('products.show')||request()->routeIs('products.search') )
+                        @foreach (Category::all() as $category)
+                        <a class="p-2 text-muted" href="{{ route('products.index', ['categorie' => $category->slug]) }}">{{ $category->name }}</a>
+                    @endforeach
+          @endif
 
     </nav>
   </div>
@@ -119,10 +121,13 @@
       <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
     </div>
   </div> --}}
-       @if (request()->input())
+       @if (request()->input('mot'))
 
            <h6>{{ $products->total() }} Résultat(s) pour la recherche "{{ request()->mot }}"</h6>
+
        @endif
+
+
   <div class="row mb-2">
     @yield('Content')
   </div>

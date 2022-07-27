@@ -161,9 +161,9 @@ $cart=Cart::content();
                                 <td class="product-name">
                                     <h3>'.$item->name.'</h3>
                                 </td>
-                                <td class="price">$ '.$item->price.'</td>
+                                <td class="price">$ '.$item->price.'Fcfa </td>
                                 <td class="qty">'.$item->qty.'</td>
-                                <td class="total">$ '.$item->price*$item->qty.'</td>
+                                <td class="total">$ '.$item->price*$item->qty.'Fcfa </td>
                             </tr><!-- END TR-->
                             </tbody>';
 
@@ -182,7 +182,7 @@ $cart=Cart::content();
                         <thead class="thead">
                             <tr class="text-center">
                                     <th>Total</th>
-                                    <th style="color:red">$ '.$totalPrice.'</th>
+                                    <th style="color:red">'.$totalPrice.'Fcfa </th>
                             </tr>
                         </thead>
                     </table>';

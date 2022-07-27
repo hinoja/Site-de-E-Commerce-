@@ -30,9 +30,9 @@ class ProductController extends Controller
         if (request()->categorie) {
             $products = Product::with('categories')->whereHas('categories', function ($query) {
                 $query->where('slug', request()->categorie);
-            })->paginate(6);
+            })->paginate(25);
         } else {
-            $products = Product::with('categories')->paginate(6);
+            $products = Product::with('categories')->paginate(25);
         }
 
 

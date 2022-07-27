@@ -1,7 +1,8 @@
+
 @php
     use Gloudemans\Shoppingcart\Facades\Cart;
-
-    use App\Product;
+use App\Models\Product;
+    // use App\Product;
 @endphp
 
 @extends('layout.Master')
@@ -12,7 +13,11 @@
     @endsection
 
 @section('Content')
+
+    @if (Cart::count()>0)
         <div class=""> <a class="btn btn-success" href="{{ route('pdfView') }}">Generer Pdf</a> </div>
+
+    @endif
           <div class="">
                         @if (Cart::count()>0)
                         <div class="px-4 px-lg-0">
@@ -20,12 +25,12 @@
                                 <div class="row">
                                         <div class="col-xs-12 col-lg-12  ">
                                             <!-- For demo purpose -->
-                                            <div class="container text-red py-5 text-center">
+                                            <div class="container text-red py-5 text-center bg-danger">
                                                 <h1 class="display-4"> Mon Panier </h1>
                                             </div>
                                             <!-- End -->
 
-                                            <div class="pb-5">
+                                            <div class="pb-2">
                                             <div class="container">
                                                 <div class="row">
                                                 <div class="col-lg-12 col-xs-12">
@@ -53,11 +58,13 @@
                                                                 <tbody>
                                                                     @foreach (Cart::content() as $item )
                                                                         <tr>
+                                                                            {{-- {{ (Product::find($item->id))->image }} --}}
+                                                                            {{-- asset('img/img01.png') --}}
                                                                             <th scope="row" class="border-0" class="text-center">
                                                                                 <div class="p-2">
-                                                                                    <img src="{{ asset('img/img01.png') }} " alt="" width="70" class="img-fluid rounded shadow-sm"><br>
+                                                                                    <img src= "{{ asset('storage/'.(Product::find($item->id))->image) }}"  alt="" width="70" class="img-fluid rounded shadow-sm"><br>
                                                                                     <div class="ml-3 d-inline-block align-middle">
-                                                                                    <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Nom Produit :   </a></h5><span class="text-muted font-weight-normal font-italic d-block">{{ $item->name }}</span>
+                                                                                    <h5 class="mb-0"> <span href="#" class="text-dark d-inline-block align-middle">{{ $item->name }}  </h5><span class="text-muted font-weight-normal font-italic d-block"></span>
                                                                                     </div>
                                                                                 </div>
                                                                             </th>

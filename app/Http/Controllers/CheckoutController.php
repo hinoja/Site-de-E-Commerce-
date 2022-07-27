@@ -20,6 +20,7 @@ class CheckoutController extends Controller
     public function checkout()
     {
 
+
         if(Cart::count()<=0)
         {
                 return redirect()->route('products.index');
@@ -28,8 +29,8 @@ class CheckoutController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_51Kp5tJGRaOhIEKLtouPZzW5F8bA3Dfr1IZzvVnMs7OPGgNYFRBO76yFnmY0m8NYPaFsGr1vqjtK7X2LGdLNpwPdT00wSBnBjMP');
 
 
-		 $amount = ((int)(Cart::total()));
-		 $amount *= 100;
+		 $amount = ((int)(Cart::total()))*100;
+		//  $amount *= 100;
 		//  $amount *= 1;
 
         // $amount =  round((floatval($amount))) ;
@@ -65,28 +66,37 @@ class CheckoutController extends Controller
           $paymentIntent=$request->json()->all();//a verifier si la recuperation est effective à via REQUEST
           $order=new Orders();
           Cart::destroy();
+          return   view('checkout.merci') ;
 
         //  dd($request->json()->all());
-           $order->payment_id= $paymentIntent['paymentIntent']['id'];
-          $order->amount= $paymentIntent['paymentIntent']['amount'];
-          $order->payment_created_at=(new DateTime())
-                                      ->setTimestamp($paymentIntent['paymentIntent']['created'])
-                                      ->format('Y-m-d H-i-s');
 
-              $products=[];
-              $i=0;
-              foreach(Cart::content() as $product)
-              {
-                     $products['product_id_'.$i][]=$product->qty;
-                     $products['product_id_'.$i][]=$product->price;
-                     $products['product_id_'.$i][]=$product->name;
-                     $i++;
-              }
-              $order->products=serialize($products);
-              $order->user_id=15;
 
-              $order->save();
-              return  redirect()->route('checkout.merci') ;
+
+        //    $order->payment_id= $paymentIntent['paymentIntent']['id'];
+        //   $order->amount= $paymentIntent['paymentIntent']['amount'];
+        //   $order->payment_created_at=(new DateTime())
+        //                               ->setTimestamp($paymentIntent['paymentIntent']['created'])
+        //                               ->format('Y-m-d H-i-s');
+
+        //       $products=[];
+        //       $i=0;
+        //       foreach(Cart::content() as $product)
+        //       {
+        //              $products['product_id_'.$i][]=$product->qty;
+        //              $products['product_id_'.$i][]=$product->price;
+        //              $products['product_id_'.$i][]=$product->name;
+        //              $i++;
+        //       }
+        //       $order->products=serialize($products);
+        //       $order->user_id=15;
+
+        //       $order->save();
+        //       return  redirect()->route('checkout.merci') ;
+
+
+
+
+
 
             //   if($payment_intent['paymentIntent']['status'] === 'succeeded')
             //   {

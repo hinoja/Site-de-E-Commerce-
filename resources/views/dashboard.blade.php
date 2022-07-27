@@ -11,6 +11,12 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!
                 </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <a style="list-style-type: none;text-decoration:none" href="{{ route('products.index') }}" class="ml-1 underline  ">
+                           <span style="color: green">Visiter la boutique!</span>   🛒 Application E-Commerce avec Laravel 6
+                        </a>
+                    </div>
             </div>
         </div>
     </div>
