@@ -3,6 +3,7 @@
 // use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CartController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\ProductController;
@@ -51,6 +52,7 @@ Route::group(['middleware'=>['auth']],function()
     Route::get('/viderPanier',function(){
         Cart::destroy();
     });
+   Route::get('/genererPdf',[PDFController::class,'generatePDF'])->name('pdfView');
 
 });
 

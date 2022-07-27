@@ -26,18 +26,19 @@ class ProductController extends Controller
 
 
 
+
         if (request()->categorie) {
-            $product= Product::with('categories')->whereHas('categories', function ($query) {
+            $products = Product::with('categories')->whereHas('categories', function ($query) {
                 $query->where('slug', request()->categorie);
-            })->paginate(3);
+            })->paginate(6);
         } else {
-            $product = Product::with('categories')->paginate(3);
+            $products = Product::with('categories')->paginate(6);
         }
 
 
 
 
-            return view('Products.index',['products'=>$product]);
+            return view('Products.index',['products'=>$products]);
     }
 
     /**
