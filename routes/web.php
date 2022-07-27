@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\TodolistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,15 @@ Route::group(['middleware'=>['auth']],function()
     });
    Route::get('/genererPdf',[PDFController::class,'generatePDF'])->name('pdfView');
 
+});
+
+Route::group(['middleware'=>['auth']],function()
+{
+    //todolist
+Route::get('/todo',[TodolistController::class,'index'])->name('todo.index');
+Route::post('/todo',[TodolistController::class,'store'])->name('store');
+// Route::get('/',[TodolistController::class,'index']);
+  Route::get('todo/{id}',[TodolistController::class,'destroy'])->name('delete');
 });
 
 

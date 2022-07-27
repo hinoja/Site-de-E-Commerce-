@@ -18,8 +18,8 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                        {{ __('ToDo List') }}
+                    <x-nav-link :href="route('todo.index')" :active="request()->routeIs('todo.index')">
+                        {{ __('ToDoList') }}
                     </x-nav-link>
                 </div>
             </div>
